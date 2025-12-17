@@ -38,6 +38,8 @@ class CalendarGenerator
     private const COLOR_HOLIDAY_TEXT = 'C0392B';
     private const COLOR_HOLIDAY_BG = 'FADBD8';
     private const COLOR_SCHOOL_HOLIDAY_BG = 'FFF9C4'; // Yellow for school holidays
+    private const COLOR_SCHOOL_HOLIDAY_WEEKEND_BG = 'E6D98C'; // Darker yellow-gray for school holiday on weekend
+    private const COLOR_HOLIDAY_SCHOOL_BG = 'FFEB3B'; // Bright yellow for public holiday + school holiday overlap
 
     // Row heights
     private const HEIGHT_YEAR_ROW = 35;
@@ -375,12 +377,21 @@ class CalendarGenerator
                     }
                 }
 
-                // Determine background color (public holiday > school holiday > weekend > white)
-                if ($isHoliday) {
+                // Determine background color with priority handling
+                if ($isHoliday && $isSchoolHoliday) {
+                    // Public holiday + school holiday = bright yellow
+                    $bgColor = self::COLOR_HOLIDAY_SCHOOL_BG;
+                } elseif ($isHoliday) {
+                    // Public holiday only = pink/red
                     $bgColor = self::COLOR_HOLIDAY_BG;
+                } elseif ($isSchoolHoliday && $isWeekend) {
+                    // School holiday on weekend = darker yellow-gray
+                    $bgColor = self::COLOR_SCHOOL_HOLIDAY_WEEKEND_BG;
                 } elseif ($isSchoolHoliday) {
+                    // School holiday only = yellow
                     $bgColor = self::COLOR_SCHOOL_HOLIDAY_BG;
                 } elseif ($isWeekend) {
+                    // Weekend only = gray
                     $bgColor = self::COLOR_WEEKEND_CELL;
                 } else {
                     $bgColor = 'FFFFFF';
