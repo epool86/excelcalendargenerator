@@ -149,9 +149,11 @@ class CalendarGenerator
             '2026-07-21' => 'Hari Hol Negeri Johor',
             '2026-07-31' => 'Sultan Pahang Birthday',
             '2026-08-24' => 'Melaka Governor Birthday',
-            '2026-09-11' => 'Sultan Selangor Birthday',
-            '2026-10-03' => 'Sabah Governor Birthday',
-            '2026-10-12' => 'Sarawak Governor Birthday',
+            '2026-09-29' => 'Sultan Kelantan Birthday',
+            '2026-09-30' => 'Sultan Kelantan Birthday (Day 2)',
+            '2026-10-10' => 'Sarawak Governor Birthday',
+            '2026-11-06' => 'Sultan Perak Birthday',
+            '2026-12-11' => 'Sultan Selangor Birthday',
         ];
     }
 
@@ -174,10 +176,10 @@ class CalendarGenerator
         $this->addDateRange($holidays, '2026-03-19', '2026-03-29');
         // Mid-term 2: May 22 - June 6
         $this->addDateRange($holidays, '2026-05-22', '2026-06-06');
-        // Mid-term 2 (estimated): mid Sept
-        $this->addDateRange($holidays, '2026-09-11', '2026-09-20');
-        // Year-end (estimated): mid Dec
-        $this->addDateRange($holidays, '2026-12-18', '2026-12-31');
+        // Mid-term 3 (Cuti Penggal 2): Aug 28 - Sept 6 (Kump B)
+        $this->addDateRange($holidays, '2026-08-28', '2026-09-06');
+        // Year-end (Cuti Akhir): Dec 4 - Dec 31 (Kump A)
+        $this->addDateRange($holidays, '2026-12-04', '2026-12-31');
 
         return $holidays;
     }
