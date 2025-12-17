@@ -134,15 +134,15 @@ class CalendarGenerator
 
             // 2026 State Holidays
             '2026-01-14' => 'Hari Hol Negeri Sembilan',
-            '2026-01-19' => 'Sultan Perak Birthday',
-            '2026-01-25' => 'Sultan Kedah Birthday',
-            '2026-02-22' => 'Israk Mikraj',
-            '2026-03-23' => 'Sultan Johor Birthday',
-            '2026-04-19' => 'Sultan Perak Declaration',
-            '2026-04-26' => 'Sultan Kelantan Birthday',
-            '2026-05-04' => 'Sultan Terengganu Birthday',
+            '2026-01-17' => 'Israk Mikraj',
+            '2026-02-20' => 'Hari Pengisytiharan Kemerdekaan (Melaka)',
+            '2026-03-04' => 'Hari Ulang Tahun Pertabalan Sultan Terengganu',
+            '2026-03-23' => 'Hari Raya (3rd Day) / Sultan Johor Birthday',
+            '2026-04-03' => 'Good Friday',
+            '2026-04-26' => 'Sultan Terengganu Birthday',
             '2026-05-17' => 'Raja Perlis Birthday',
             '2026-05-22' => 'Hari Hol Pahang',
+            '2026-05-26' => 'Hari Arafah',
             '2026-07-11' => 'Penang Governor Birthday',
             '2026-07-22' => 'Sultan Pahang Birthday',
             '2026-07-30' => 'Sultan Pahang Hol',
@@ -160,10 +160,10 @@ class CalendarGenerator
         // ============ 2025 School Holidays ============
         // Mid-term 1: May 29 - June 9
         $this->addDateRange($holidays, '2025-05-29', '2025-06-09');
-        // Mid-term 2: Sept 12 - Sept 21
-        $this->addDateRange($holidays, '2025-09-12', '2025-09-21');
-        // Year-end: Dec 19, 2025 - Jan 11, 2026
-        $this->addDateRange($holidays, '2025-12-19', '2025-12-31');
+        // Mid-term 2: Sept 13 - Sept 21
+        $this->addDateRange($holidays, '2025-09-13', '2025-09-21');
+        // Year-end: Dec 20, 2025 - Jan 11, 2026
+        $this->addDateRange($holidays, '2025-12-20', '2025-12-31');
 
         // ============ 2026 School Holidays (estimated based on pattern) ============
         // Year-end from 2025 continues: Jan 1 - Jan 11
