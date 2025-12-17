@@ -29,7 +29,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['year'])) {
     exit;
 }
 
-// Get current year for default selection
+// Default selected year
+$selectedYear = 2026;
 $currentYear = (int) date('Y');
 ?>
 <!DOCTYPE html>
@@ -166,6 +167,27 @@ $currentYear = (int) date('Y');
             font-size: 24px;
             margin-bottom: 15px;
         }
+
+        .footer {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            font-size: 12px;
+            color: #888;
+        }
+
+        .footer a {
+            color: #5B2C6F;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        .footer p {
+            margin: 5px 0;
+        }
     </style>
 </head>
 <body>
@@ -179,7 +201,7 @@ $currentYear = (int) date('Y');
                 <label for="year">Select Year</label>
                 <select name="year" id="year">
                     <?php for ($y = $currentYear; $y <= $currentYear + 5; $y++): ?>
-                        <option value="<?= $y ?>" <?= $y === $currentYear ? 'selected' : '' ?>>
+                        <option value="<?= $y ?>" <?= $y === $selectedYear ? 'selected' : '' ?>>
                             <?= $y ?>
                         </option>
                     <?php endfor; ?>
@@ -200,6 +222,11 @@ $currentYear = (int) date('Y');
                 <li>Weekend columns marked in grey</li>
                 <li>Professional formatting & styling</li>
             </ul>
+        </div>
+
+        <div class="footer">
+            <p>Created by <a href="https://fb.com/asbahri" target="_blank">AHMAD SAIFUL BAHRI</a></p>
+            <p><a href="https://github.com/epool86/excelcalendargenerator" target="_blank">View Source Code on GitHub</a></p>
         </div>
     </div>
 </body>
