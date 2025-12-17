@@ -37,6 +37,7 @@ class CalendarGenerator
     private const COLOR_YEAR_HEADER = '1B4F72';
     private const COLOR_HOLIDAY_TEXT = 'C0392B';
     private const COLOR_HOLIDAY_BG = 'FADBD8';
+    private const COLOR_SCHOOL_HOLIDAY_BG = 'FFF9C4'; // Yellow for school holidays
 
     // Row heights
     private const HEIGHT_YEAR_ROW = 35;
@@ -49,46 +50,144 @@ class CalendarGenerator
     private const COLUMN_WIDTH = 22;
 
     private array $holidays;
+    private array $schoolHolidays;
 
     public function __construct()
     {
         $this->holidays = $this->loadHolidays();
+        $this->schoolHolidays = $this->loadSchoolHolidays();
     }
 
     private function loadHolidays(): array
     {
         return [
-            // 2025 Holidays
+            // ============ 2025 National Holidays ============
             '2025-01-01' => 'New Year\'s Day',
             '2025-01-29' => 'Chinese New Year',
+            '2025-01-30' => 'Chinese New Year (Day 2)',
+            '2025-02-01' => 'Federal Territory Day',
+            '2025-02-11' => 'Thaipusam',
+            '2025-03-02' => 'Awal Ramadan',
+            '2025-03-18' => 'Nuzul Al-Quran',
             '2025-03-31' => 'Hari Raya Aidilfitri',
-            '2025-04-01' => 'Hari Raya Aidilfitri Holiday',
+            '2025-04-01' => 'Hari Raya Aidilfitri (Day 2)',
             '2025-05-01' => 'Labour Day',
             '2025-05-12' => 'Wesak Day',
-            '2025-06-02' => 'Birthday of SPB Yang di Pertuan Agong',
+            '2025-05-30' => 'Pesta Kaamatan (Sabah)',
+            '2025-05-31' => 'Pesta Kaamatan (Sabah)',
+            '2025-06-01' => 'Gawai Dayak (Sarawak)',
+            '2025-06-02' => 'Gawai Dayak / Agong Birthday',
             '2025-06-07' => 'Hari Raya Haji',
+            '2025-06-08' => 'Hari Raya Haji (Day 2)',
             '2025-06-27' => 'Awal Muharram',
+            '2025-07-22' => 'Sarawak Day',
             '2025-08-31' => 'National Day',
             '2025-09-05' => 'Maulidur Rasul',
             '2025-09-16' => 'Malaysia Day',
+            '2025-10-20' => 'Deepavali',
             '2025-12-25' => 'Christmas Day',
 
-            // 2026 Holidays
+            // 2025 State Holidays
+            '2025-01-14' => 'Hari Hol Negeri Sembilan',
+            '2025-01-19' => 'Sultan Perak Birthday',
+            '2025-02-05' => 'Sultan Kedah Birthday',
+            '2025-03-04' => 'Israk Mikraj',
+            '2025-03-23' => 'Sultan Johor Birthday',
+            '2025-04-15' => 'Sultan Terengganu Birthday',
+            '2025-04-19' => 'Sultan Perak Declaration',
+            '2025-04-26' => 'Sultan Kelantan Birthday',
+            '2025-05-17' => 'Raja Perlis Birthday',
+            '2025-05-22' => 'Hari Hol Pahang',
+            '2025-07-11' => 'Penang Governor Birthday',
+            '2025-07-22' => 'Sultan Pahang Birthday',
+            '2025-07-30' => 'Sultan Pahang Hol',
+            '2025-08-24' => 'Melaka Governor Birthday',
+            '2025-09-14' => 'Sultan Selangor Birthday',
+            '2025-10-03' => 'Sabah Governor Birthday',
+            '2025-10-13' => 'Sarawak Governor Birthday',
+
+            // ============ 2026 National Holidays ============
             '2026-01-01' => 'New Year\'s Day',
+            '2026-02-01' => 'Federal Territory Day / Thaipusam',
             '2026-02-17' => 'Chinese New Year',
-            '2026-02-18' => 'Chinese New Year Holiday',
+            '2026-02-18' => 'Chinese New Year (Day 2)',
+            '2026-02-19' => 'Awal Ramadan',
+            '2026-03-07' => 'Nuzul Al-Quran',
             '2026-03-21' => 'Hari Raya Aidilfitri',
-            '2026-03-22' => 'Hari Raya Aidilfitri Holiday',
+            '2026-03-22' => 'Hari Raya Aidilfitri (Day 2)',
             '2026-05-01' => 'Labour Day',
             '2026-05-27' => 'Hari Raya Haji',
-            '2026-05-31' => 'Wesak Day',
-            '2026-06-01' => 'Birthday of SPB Yang di Pertuan Agong',
+            '2026-05-28' => 'Hari Raya Haji (Day 2)',
+            '2026-05-30' => 'Pesta Kaamatan (Sabah)',
+            '2026-05-31' => 'Pesta Kaamatan / Wesak Day',
+            '2026-06-01' => 'Gawai Dayak / Agong Birthday',
+            '2026-06-02' => 'Gawai Dayak (Sarawak)',
             '2026-06-17' => 'Awal Muharram',
+            '2026-07-22' => 'Sarawak Day',
             '2026-08-25' => 'Maulidur Rasul',
             '2026-08-31' => 'National Day',
             '2026-09-16' => 'Malaysia Day',
+            '2026-11-08' => 'Deepavali',
             '2026-12-25' => 'Christmas Day',
+
+            // 2026 State Holidays
+            '2026-01-14' => 'Hari Hol Negeri Sembilan',
+            '2026-01-19' => 'Sultan Perak Birthday',
+            '2026-01-25' => 'Sultan Kedah Birthday',
+            '2026-02-22' => 'Israk Mikraj',
+            '2026-03-23' => 'Sultan Johor Birthday',
+            '2026-04-19' => 'Sultan Perak Declaration',
+            '2026-04-26' => 'Sultan Kelantan Birthday',
+            '2026-05-04' => 'Sultan Terengganu Birthday',
+            '2026-05-17' => 'Raja Perlis Birthday',
+            '2026-05-22' => 'Hari Hol Pahang',
+            '2026-07-11' => 'Penang Governor Birthday',
+            '2026-07-22' => 'Sultan Pahang Birthday',
+            '2026-07-30' => 'Sultan Pahang Hol',
+            '2026-08-24' => 'Melaka Governor Birthday',
+            '2026-09-11' => 'Sultan Selangor Birthday',
+            '2026-10-03' => 'Sabah Governor Birthday',
+            '2026-10-12' => 'Sarawak Governor Birthday',
         ];
+    }
+
+    private function loadSchoolHolidays(): array
+    {
+        $holidays = [];
+
+        // ============ 2025 School Holidays ============
+        // Mid-term 1: May 29 - June 9
+        $this->addDateRange($holidays, '2025-05-29', '2025-06-09');
+        // Mid-term 2: Sept 12 - Sept 21
+        $this->addDateRange($holidays, '2025-09-12', '2025-09-21');
+        // Year-end: Dec 19, 2025 - Jan 11, 2026
+        $this->addDateRange($holidays, '2025-12-19', '2025-12-31');
+
+        // ============ 2026 School Holidays (estimated based on pattern) ============
+        // Year-end from 2025 continues: Jan 1 - Jan 11
+        $this->addDateRange($holidays, '2026-01-01', '2026-01-11');
+        // Mid-term 1 (estimated): late May - early June
+        $this->addDateRange($holidays, '2026-05-28', '2026-06-08');
+        // Mid-term 2 (estimated): mid Sept
+        $this->addDateRange($holidays, '2026-09-11', '2026-09-20');
+        // Year-end (estimated): mid Dec
+        $this->addDateRange($holidays, '2026-12-18', '2026-12-31');
+
+        return $holidays;
+    }
+
+    private function addDateRange(array &$holidays, string $start, string $end): void
+    {
+        $startDate = new \DateTime($start);
+        $endDate = new \DateTime($end);
+        $endDate->modify('+1 day');
+
+        $interval = new \DateInterval('P1D');
+        $period = new \DatePeriod($startDate, $interval, $endDate);
+
+        foreach ($period as $date) {
+            $holidays[$date->format('Y-m-d')] = true;
+        }
     }
 
     public function generate(int $year): Spreadsheet
@@ -261,20 +360,26 @@ class CalendarGenerator
                 // Determine if weekend
                 $isWeekend = ($col >= 5);
 
-                // Check for holiday
+                // Check for holiday and school holiday
                 $holidayName = null;
                 $isHoliday = false;
+                $isSchoolHoliday = false;
                 if ($showDate && $dateNumber !== null) {
                     $dateKey = sprintf('%04d-%02d-%02d', $year, $month, $dateNumber);
                     if (isset($this->holidays[$dateKey])) {
                         $holidayName = $this->holidays[$dateKey];
                         $isHoliday = true;
                     }
+                    if (isset($this->schoolHolidays[$dateKey])) {
+                        $isSchoolHoliday = true;
+                    }
                 }
 
-                // Determine background color (holiday takes priority, then weekend, then white)
+                // Determine background color (public holiday > school holiday > weekend > white)
                 if ($isHoliday) {
                     $bgColor = self::COLOR_HOLIDAY_BG;
+                } elseif ($isSchoolHoliday) {
+                    $bgColor = self::COLOR_SCHOOL_HOLIDAY_BG;
                 } elseif ($isWeekend) {
                     $bgColor = self::COLOR_WEEKEND_CELL;
                 } else {
