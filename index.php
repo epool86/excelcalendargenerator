@@ -14,9 +14,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['year'])) {
         die('Invalid year selected');
     }
 
+    // Get checkbox options
+    $includeNational = isset($_POST['include_national']);
+    $includeState = isset($_POST['include_state']);
+    $includeSchool = isset($_POST['include_school']);
+
     // Generate Excel
     $generator = new CalendarGenerator();
-    $spreadsheet = $generator->generate($year);
+    $spreadsheet = $generator->generate($year, $includeNational, $includeState, $includeSchool);
 
     // Set headers for download
     header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
@@ -80,6 +85,35 @@ $currentYear = (int) date('Y');
 
         .form-group {
             margin-bottom: 25px;
+        }
+
+        .checkbox-group {
+            text-align: left;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            padding: 8px 0;
+            font-weight: normal;
+            margin-bottom: 0;
+        }
+
+        .checkbox-label input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin-right: 10px;
+            cursor: pointer;
+            accent-color: #5B2C6F;
+        }
+
+        .checkbox-label span {
+            font-size: 14px;
+            color: #333;
         }
 
         label {
@@ -164,8 +198,12 @@ $currentYear = (int) date('Y');
         }
 
         .flag {
-            font-size: 24px;
-            margin-bottom: 15px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            background: url('https://flagcdn.com/w80/my.png') center center / cover no-repeat;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
         }
 
         .footer {
@@ -192,7 +230,7 @@ $currentYear = (int) date('Y');
 </head>
 <body>
     <div class="container">
-        <div class="flag">🇲🇾</div>
+        <div class="flag"></div>
         <h1>Excel Calendar Generator</h1>
         <p class="subtitle">Generate yearly calendar with Malaysian public holidays</p>
 
@@ -206,6 +244,21 @@ $currentYear = (int) date('Y');
                         </option>
                     <?php endfor; ?>
                 </select>
+            </div>
+
+            <div class="form-group checkbox-group">
+                <label class="checkbox-label">
+                    <input type="checkbox" name="include_national" checked>
+                    <span>Include National Holidays</span>
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" name="include_state" checked>
+                    <span>Include State Holidays</span>
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" name="include_school" checked>
+                    <span>Include School Holidays</span>
+                </label>
             </div>
 
             <button type="submit">

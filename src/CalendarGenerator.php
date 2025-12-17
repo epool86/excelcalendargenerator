@@ -52,15 +52,22 @@ class CalendarGenerator
     private const COLUMN_WIDTH = 22;
 
     private array $holidays;
+    private array $nationalHolidays;
+    private array $stateHolidays;
     private array $schoolHolidays;
+    private bool $includeNational = true;
+    private bool $includeState = true;
+    private bool $includeSchool = true;
 
     public function __construct()
     {
-        $this->holidays = $this->loadHolidays();
+        $this->nationalHolidays = $this->loadNationalHolidays();
+        $this->stateHolidays = $this->loadStateHolidays();
         $this->schoolHolidays = $this->loadSchoolHolidays();
+        $this->holidays = array_merge($this->nationalHolidays, $this->stateHolidays);
     }
 
-    private function loadHolidays(): array
+    private function loadNationalHolidays(): array
     {
         return [
             // ============ 2025 National Holidays ============
@@ -89,25 +96,6 @@ class CalendarGenerator
             '2025-10-20' => 'Deepavali',
             '2025-12-25' => 'Christmas Day',
 
-            // 2025 State Holidays
-            '2025-01-14' => 'Hari Hol Negeri Sembilan',
-            '2025-01-19' => 'Sultan Perak Birthday',
-            '2025-02-05' => 'Sultan Kedah Birthday',
-            '2025-03-04' => 'Israk Mikraj',
-            '2025-03-23' => 'Sultan Johor Birthday',
-            '2025-04-15' => 'Sultan Terengganu Birthday',
-            '2025-04-19' => 'Sultan Perak Declaration',
-            '2025-04-26' => 'Sultan Kelantan Birthday',
-            '2025-05-17' => 'Raja Perlis Birthday',
-            '2025-05-22' => 'Hari Hol Pahang',
-            '2025-07-11' => 'Penang Governor Birthday',
-            '2025-07-22' => 'Sultan Pahang Birthday',
-            '2025-07-30' => 'Sultan Pahang Hol',
-            '2025-08-24' => 'Melaka Governor Birthday',
-            '2025-09-14' => 'Sultan Selangor Birthday',
-            '2025-10-03' => 'Sabah Governor Birthday',
-            '2025-10-13' => 'Sarawak Governor Birthday',
-
             // ============ 2026 National Holidays ============
             '2026-01-01' => 'New Year\'s Day',
             '2026-02-01' => 'Federal Territory Day / Thaipusam',
@@ -131,6 +119,30 @@ class CalendarGenerator
             '2026-09-16' => 'Malaysia Day',
             '2026-11-08' => 'Deepavali',
             '2026-12-25' => 'Christmas Day',
+        ];
+    }
+
+    private function loadStateHolidays(): array
+    {
+        return [
+            // 2025 State Holidays
+            '2025-01-14' => 'Hari Hol Negeri Sembilan',
+            '2025-01-19' => 'Sultan Perak Birthday',
+            '2025-02-05' => 'Sultan Kedah Birthday',
+            '2025-03-04' => 'Israk Mikraj',
+            '2025-03-23' => 'Sultan Johor Birthday',
+            '2025-04-15' => 'Sultan Terengganu Birthday',
+            '2025-04-19' => 'Sultan Perak Declaration',
+            '2025-04-26' => 'Sultan Kelantan Birthday',
+            '2025-05-17' => 'Raja Perlis Birthday',
+            '2025-05-22' => 'Hari Hol Pahang',
+            '2025-07-11' => 'Penang Governor Birthday',
+            '2025-07-22' => 'Sultan Pahang Birthday',
+            '2025-07-30' => 'Sultan Pahang Hol',
+            '2025-08-24' => 'Melaka Governor Birthday',
+            '2025-09-14' => 'Sultan Selangor Birthday',
+            '2025-10-03' => 'Sabah Governor Birthday',
+            '2025-10-13' => 'Sarawak Governor Birthday',
 
             // 2026 State Holidays
             '2026-01-14' => 'Hari Hol Negeri Sembilan',
@@ -198,8 +210,21 @@ class CalendarGenerator
         }
     }
 
-    public function generate(int $year): Spreadsheet
+    public function generate(int $year, bool $includeNational = true, bool $includeState = true, bool $includeSchool = true): Spreadsheet
     {
+        $this->includeNational = $includeNational;
+        $this->includeState = $includeState;
+        $this->includeSchool = $includeSchool;
+
+        // Build holidays array based on options
+        $this->holidays = [];
+        if ($this->includeNational) {
+            $this->holidays = array_merge($this->holidays, $this->nationalHolidays);
+        }
+        if ($this->includeState) {
+            $this->holidays = array_merge($this->holidays, $this->stateHolidays);
+        }
+
         $spreadsheet = new Spreadsheet();
 
         // Remove default sheet
@@ -378,7 +403,7 @@ class CalendarGenerator
                         $holidayName = $this->holidays[$dateKey];
                         $isHoliday = true;
                     }
-                    if (isset($this->schoolHolidays[$dateKey])) {
+                    if ($this->includeSchool && isset($this->schoolHolidays[$dateKey])) {
                         $isSchoolHoliday = true;
                     }
                 }
